@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpChat.Tests", "SharpChat.Tests\SharpChat.Tests.csproj", "{50F0D404-9C21-4B9A-B173-E3440E364544}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpChat", "SharpChat\SharpChat.csproj", "{5B5CC10D-5FC0-430D-B057-221EECF99899}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{50F0D404-9C21-4B9A-B173-E3440E364544}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50F0D404-9C21-4B9A-B173-E3440E364544}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50F0D404-9C21-4B9A-B173-E3440E364544}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50F0D404-9C21-4B9A-B173-E3440E364544}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B5CC10D-5FC0-430D-B057-221EECF99899}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B5CC10D-5FC0-430D-B057-221EECF99899}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B5CC10D-5FC0-430D-B057-221EECF99899}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B5CC10D-5FC0-430D-B057-221EECF99899}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9304B805-157A-4476-8A0B-804748F95CD5}
+	EndGlobalSection
+EndGlobal
