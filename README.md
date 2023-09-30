@@ -1,4 +1,5 @@
 # SharpChat
+[![.NET Build](https://github.com/everharder/SharpChat/actions/workflows/dotnet-build.yml/badge.svg?branch=main)](https://github.com/everharder/SharpChat/actions/workflows/dotnet-build.yml)
 
 SharpChat is a library for C# that offers the functionality of TypeChat, making it seamless to construct natural language interfaces using types.
 
