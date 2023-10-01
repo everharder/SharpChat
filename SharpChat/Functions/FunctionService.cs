@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -126,7 +127,7 @@ internal class FunctionService : IFunctionInvoker, IFunctionRegistry
             return Enum.Parse(parameter.DotNetType, valueAsString);
         }
 
-        return Convert.ChangeType(valueAsString, parameter.DotNetType);
+        return Convert.ChangeType(valueAsString, parameter.DotNetType, new CultureInfo("en"));
     }
 
     private string NormalizeFunctionName(string functionName)

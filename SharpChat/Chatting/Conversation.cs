@@ -1,5 +1,7 @@
 ﻿using Azure.AI.OpenAI;
 using SharpChat.Functions;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace SharpChat.Chatting;
 
@@ -30,14 +32,12 @@ internal class Conversation : IConversation
         this.client = client;
         this.configuration = configuration;
         this.functionInvoker = functionInvoker;
-        if (string.IsNullOrWhiteSpace(configuration.SystemPrompt))
+        if (!string.IsNullOrWhiteSpace(configuration.SystemPrompt))
         {
-            throw new ArgumentException(nameof(configuration.SystemPrompt));
+            // add system prompt as first input
+            ChatMessage systemMessage = new(role: ChatRole.System, content: configuration.SystemPrompt);
+            messages.Add(systemMessage);
         }
-
-        // add system prompt as first input
-        ChatMessage systemMessage = new(role: ChatRole.System, content: configuration.SystemPrompt);
-        messages.Add(systemMessage);
 
         functions = functionRegistry.GetRegisteredFunctions().AsReadOnly();
     }
@@ -76,8 +76,10 @@ internal class Conversation : IConversation
             functionCallCount.Value += 1;
             object? result = functionInvoker.CallFunction(response.FunctionCall);
 
+            string? serialized = result != null ? JsonSerializer.Serialize(result) : null;
+
             // add the function call result to the history
-            messages.Add(new ChatMessage(ChatRole.Function, result?.ToString())
+            messages.Add(new ChatMessage(ChatRole.Function, serialized)
             {
                 Name = response.FunctionCall.Name,
             });
