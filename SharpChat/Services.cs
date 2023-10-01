@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using SharpChat.Chatting;
 using SharpChat.Functions;
 
 namespace SharpChat;
@@ -15,5 +16,6 @@ public static class Services
                 functionRegistryAction?.Invoke(functionService, s);
                 return functionService;
             })
+            .AddSingleton<IConversationFactory, ConversationFactory>()
             .AddSingleton<ISharpFunctionFactory, SharpFunctionFactory>();
 }
