@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpChat.Examples.Math", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{565054F6-9C35-41E6-AE24-7EA4933D9F20}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpChat.Examples.Shopping", "SharpChat.Examples.Shopping\SharpChat.Examples.Shopping.csproj", "{769E837C-CC01-4AC9-99AB-4D3C853A0287}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,12 +31,17 @@ Global
 		{AF23B241-63FA-4991-8D5B-3BCAFFDEE41A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF23B241-63FA-4991-8D5B-3BCAFFDEE41A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF23B241-63FA-4991-8D5B-3BCAFFDEE41A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{769E837C-CC01-4AC9-99AB-4D3C853A0287}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{769E837C-CC01-4AC9-99AB-4D3C853A0287}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{769E837C-CC01-4AC9-99AB-4D3C853A0287}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{769E837C-CC01-4AC9-99AB-4D3C853A0287}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{AF23B241-63FA-4991-8D5B-3BCAFFDEE41A} = {565054F6-9C35-41E6-AE24-7EA4933D9F20}
+		{769E837C-CC01-4AC9-99AB-4D3C853A0287} = {565054F6-9C35-41E6-AE24-7EA4933D9F20}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9304B805-157A-4476-8A0B-804748F95CD5}

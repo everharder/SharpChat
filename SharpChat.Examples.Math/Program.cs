@@ -10,9 +10,6 @@ internal class Program
     /// SharpChat example illustrating how to register functions for the chatbot to use
     /// This greatly improves upon chatbot accuracy, eliminating hallucinations
     /// </summary>
-    /// <param name="apikey"></param>
-    /// <param name="model"></param>
-    /// <returns></returns>
     static async Task Main(string apikey, string model)
     {
         // setup sharpchat
