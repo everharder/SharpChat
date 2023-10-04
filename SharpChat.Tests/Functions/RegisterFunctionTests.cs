@@ -85,6 +85,28 @@ namespace SharpChat.Tests.Functions
         }
 
         [TestMethod]
+        public void RegisterFunction_ArrayType_Works()
+        {
+            var cot = new SharpFunctionFactory();
+            SharpFunction function = cot.CreateSharpFunction(callbacks, nameof(callbacks.MethodWithArray));
+
+            function.Should().NotBeNull();
+            function.Name.Should().Be(nameof(callbacks.MethodWithArray));
+            function.Description.Should().NotBeNullOrWhiteSpace();
+            function.Parameters.Should().HaveCount(1);
+
+            SharpFunctionParameter parameter = function.Parameters.First();
+            parameter.Name.Should().Be("arrayValue");
+            parameter.DotNetType.Should().Be(typeof(int[]));
+            parameter.JsType.Should().Be("number[]");
+            parameter.IsRequired.Should().BeTrue();
+            parameter.Description.Should()
+                .NotBeNullOrWhiteSpace()
+                .And
+                .NotBe(function.Description);
+        }
+
+        [TestMethod]
         public void RegisterAllFunctions_WhenCalled_Works()
         {
             FunctionService cot = new(new SharpFunctionFactory());

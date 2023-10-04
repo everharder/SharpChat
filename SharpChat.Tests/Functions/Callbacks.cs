@@ -33,6 +33,10 @@ namespace SharpChat.Tests.Functions
         public int MethodWithEnum([Description("Some enum value")] DummyEnum enumValue)
             => HashCode.Combine(enumValue);
 
+        [Description("A method with an array parameter")]
+        public int MethodWithArray([Description("Oh wow, an array")] int[] arrayValue)
+            => string.Join(",", arrayValue).GetHashCode();
+
         public class ComplexValue
         {
             public ComplexValue(

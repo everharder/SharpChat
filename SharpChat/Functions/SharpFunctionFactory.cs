@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
@@ -73,7 +74,18 @@ namespace SharpChat.Functions
         private SharpFunctionParameter CreateSharpFunctionParameter(ParameterInfo parameterInfo, Type unwrappedType = null)
         {
             Type type = parameterInfo.ParameterType;
-            if (type != typeof(string) && !type.IsPrimitive && !type.IsEnum)
+            Type elementType = type;
+
+            if(typeof(IEnumerable).IsAssignableFrom(type) && type != typeof(string))
+            {
+                if(!type.IsArray)
+                {
+                    throw new Exception($"Only array enumerable types are supported, but parameter {parameterInfo} is of type {type.Name}");
+                }
+                elementType = type.GetElementType();
+            }
+
+            if (elementType != typeof(string) && !elementType.IsPrimitive && !elementType.IsEnum)
             {
                 throw new NotSupportedException($"Complex type {type.Name} of member {parameterInfo.Name} is not supported!");
             }

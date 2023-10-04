@@ -152,6 +152,23 @@ namespace SharpChat.Tests.Functions
             result.Should().Be(expected);
         }
 
+        [TestMethod]
+        public void CallFunctionWithArrayParameter_FilledArray_Works()
+        {
+            FunctionService cot = new FunctionService(new SharpFunctionFactory());
+            cot.RegisterFunction(callbacks, nameof(callbacks.MethodWithArray));
+
+            var arrayValue = new int[] { 42, 69, 420 };
+
+            object result = Call(cot, nameof(callbacks.MethodWithArray), new Dictionary<string, object>()
+            {
+                { "arrayValue", arrayValue },
+            });
+
+            int expected = string.Join(",", arrayValue).GetHashCode();
+            result.Should().Be(expected);
+        }
+
         private object Call(FunctionService service, string name, Dictionary<string, object> parameters = null)
         {
             string serialized = parameters != null

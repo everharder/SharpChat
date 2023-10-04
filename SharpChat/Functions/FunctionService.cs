@@ -163,6 +163,11 @@ namespace SharpChat.Functions
                 return Enum.Parse(parameter.DotNetType, valueAsString);
             }
 
+            if (parameter.DotNetType.IsArray)
+            {
+                return JsonSerializer.Deserialize(valueAsString, parameter.DotNetType);
+            }
+
             return Convert.ChangeType(valueAsString, parameter.DotNetType, new CultureInfo("en"));
         }
 

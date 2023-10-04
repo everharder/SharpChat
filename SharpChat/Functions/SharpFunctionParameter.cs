@@ -57,27 +57,39 @@ namespace SharpChat.Functions
 
         private string GetJsType(Type dotNetType)
         {
-            if (dotNetType.Equals(typeof(bool)))
+            Type elementType = dotNetType;
+            if(dotNetType.IsArray)
             {
-                return "boolean";
+                elementType = dotNetType.GetElementType();
             }
 
-            if (dotNetType.Equals(typeof(int))
-                || dotNetType.Equals(typeof(short))
-                || dotNetType.Equals(typeof(long))
-                || dotNetType.Equals(typeof(float))
-                || dotNetType.Equals(typeof(double)))
+            string jsType;
+            if (elementType.Equals(typeof(bool)))
             {
-                return "number";
+                jsType = "boolean";
             }
-
-            // lets be explicit here
-            if (dotNetType.Equals(typeof(string)) || dotNetType.IsEnum)
+            else if (elementType.Equals(typeof(int))
+                || elementType.Equals(typeof(short))
+                || elementType.Equals(typeof(long))
+                || elementType.Equals(typeof(float))
+                || elementType.Equals(typeof(double)))
             {
-                return "string";
+                jsType = "number";
             }
-
-            throw new NotSupportedException($"{nameof(dotNetType)} is not supported!");
+            else if (elementType.Equals(typeof(string)) || elementType.IsEnum)
+            {
+                jsType = "string";
+            }
+            else
+            {
+                throw new NotSupportedException($"Type '{elementType.Name}' is not supported!");
+            }
+            
+            if (dotNetType.IsArray)
+            {
+                jsType += "[]";
+            }
+            return jsType;
         }
     }
 }
