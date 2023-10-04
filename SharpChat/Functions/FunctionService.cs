@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Azure.AI.OpenAI;
@@ -103,6 +104,29 @@ namespace SharpChat.Functions
             if (!registrations.TryAdd(normalizedName, function))
             {
                 throw new ArgumentException($"Function with name {normalizedName} is already registered");
+            }
+            return this;
+        }
+
+        /// <inheritdoc/>
+        public IFunctionRegistry RegisterAllFunctions(object target)
+        {
+            if (target is null)
+            {
+                throw new ArgumentNullException(nameof(target));
+            }
+
+            // Retrieve all functions from the object
+            List<MethodInfo> functions = target
+                .GetType()
+                .GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
+                .Where(m => !m.IsSpecialName && m.ReturnType != typeof(void))
+                .ToList();
+
+            // Convert functions to delegates and register them
+            foreach (MethodInfo function in functions)
+            {
+                RegisterFunction(target, function.Name);
             }
             return this;
         }

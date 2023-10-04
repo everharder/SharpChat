@@ -20,6 +20,12 @@ namespace SharpChat.Functions
         IFunctionRegistry RegisterFunction(object target, string name);
 
         /// <summary>
+        /// Enable the chatbot to execute all functions of the given instance
+        /// May cause many functions to be exposed, use at your own risk!
+        /// </summary>
+        IFunctionRegistry RegisterAllFunctions(object target);
+
+        /// <summary>
         /// Get registered functions as <see cref="FunctionDefinition"/>s which can be passed to OpenAI API
         /// </summary>
         /// <returns></returns>

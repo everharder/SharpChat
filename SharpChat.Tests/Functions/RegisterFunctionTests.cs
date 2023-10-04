@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SharpChat.Functions;
 using System;
 using System.Linq;
+using System.Reflection;
 using static SharpChat.Tests.Functions.Callbacks;
 
 namespace SharpChat.Tests.Functions
@@ -81,6 +82,23 @@ namespace SharpChat.Tests.Functions
                 .NotBe(function.Description);
             parameter.EnumOptions.Should()
                 .BeEquivalentTo(Enum.GetValues(typeof(DummyEnum)).Cast<DummyEnum>().Select(x => x.ToString()));
+        }
+
+        [TestMethod]
+        public void RegisterAllFunctions_WhenCalled_Works()
+        {
+            FunctionService cot = new(new SharpFunctionFactory());
+            cot.RegisterAllFunctions(callbacks);
+
+            var registered = cot.GetRegisteredFunctions();
+
+            var expected = callbacks
+                .GetType()
+                .GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
+                .Where(m => !m.IsSpecialName && m.ReturnType != typeof(void))
+                .ToList();
+
+            registered.Count.Should().Be(expected.Count());
         }
 
         [TestMethod]
