@@ -1,4 +1,4 @@
-﻿namespace SharpChat.Functions;
+﻿namespace SharpChat;
 
 /// <summary>
 /// This attribute is used to signal that a <see cref="SharpFunctionParameter"/> should be unwrapped
