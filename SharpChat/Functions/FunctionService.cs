@@ -40,42 +40,50 @@ internal class FunctionService : IFunctionInvoker, IFunctionRegistry
         // get the registered meta function
         SharpFunction function = GetFunction(call);
 
-        // parse the function arguments from the chatbot
-        object[]? orderedParameters = null;
-        if (!string.IsNullOrWhiteSpace(call.Arguments))
+        try
         {
-            // if the function is defined by a complex (unwrapped) object, we need to reconstruct it
-            if (function.HasUnwrappedParameters)
+            // parse the function arguments from the chatbot
+            object[]? orderedParameters = null;
+            if (!string.IsNullOrWhiteSpace(call.Arguments))
             {
-                // deserialize object JSON
-                object? unwrappedObj = JsonSerializer.Deserialize(
-                    json: call.Arguments,
-                    returnType: function.UnwrappedParameterType!,
-                    options: GetJsonOptions());
-
-                if (unwrappedObj == null)
+                // if the function is defined by a complex (unwrapped) object, we need to reconstruct it
+                if (function.HasUnwrappedParameters)
                 {
-                    throw new ArgumentException($"Failed to deserialize args {call.Arguments} into unwrapped type {function.UnwrappedParameterType}");
+                    // deserialize object JSON
+                    object? unwrappedObj = JsonSerializer.Deserialize(
+                        json: call.Arguments,
+                        returnType: function.UnwrappedParameterType!,
+                        options: GetJsonOptions());
+
+                    if (unwrappedObj == null)
+                    {
+                        throw new ArgumentException($"Failed to deserialize args {call.Arguments} into unwrapped type {function.UnwrappedParameterType}");
+                    }
+
+                    orderedParameters = new object[] { unwrappedObj };
                 }
+                else
+                {
+                    Dictionary<string, string>? parameters = JsonSerializer.Deserialize<Dictionary<string, object>>(
+                        json: call.Arguments,
+                        options: GetJsonOptions())
+                        ?.ToDictionary(k => k.Key, v => v.Value.ToString()!, StringComparer.OrdinalIgnoreCase)
+                        ?? new Dictionary<string, string>();
 
-                orderedParameters = new object[] { unwrappedObj };
+                    // ensure correct ordering and type of parameters
+                    orderedParameters = function.Parameters
+                        .Select(p => CastParameter(p, parameters.GetValueOrDefault(p.Name))!)
+                        .ToArray();
+                }
             }
-            else
-            {
-                Dictionary<string, string>? parameters = JsonSerializer.Deserialize<Dictionary<string, object>>(
-                    json: call.Arguments,
-                    options: GetJsonOptions())
-                    ?.ToDictionary(k => k.Key, v => v.Value.ToString()!, StringComparer.OrdinalIgnoreCase)
-                    ?? new Dictionary<string, string>();
 
-                // ensure correct ordering and type of parameters
-                orderedParameters = function.Parameters
-                    .Select(p => CastParameter(p, parameters.GetValueOrDefault(p.Name))!)
-                    .ToArray();
-            }
+            return function.Delegate.DynamicInvoke(orderedParameters);
         }
-
-        return function.Delegate.DynamicInvoke(orderedParameters);
+        catch (Exception ex)
+        {
+            // return erros as function results and let the LLM handle correcting it
+            return ex.Message;
+        }
     }
 
     #endregion
