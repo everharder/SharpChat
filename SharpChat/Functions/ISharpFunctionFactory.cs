@@ -1,14 +1,17 @@
-﻿namespace SharpChat.Functions;
+﻿using System;
 
-/// <summary>
-/// Service for creating <see cref="SharpFunction"/> instances
-/// </summary>
-internal interface ISharpFunctionFactory
+namespace SharpChat.Functions
 {
     /// <summary>
-    /// Create a <see cref="SharpFunction"/> from a method delegate
-    /// Attention: The delegate must not be anonymous!
-    /// TODO: write test for this
+    /// Service for creating <see cref="SharpFunction"/> instances
     /// </summary>
-    SharpFunction CreateSharpFunction(Delegate func);
+    internal interface ISharpFunctionFactory
+    {
+        /// <summary>
+        /// Create a <see cref="SharpFunction"/> from a method delegate
+        /// Attention: The delegate must not be anonymous!
+        /// TODO: write test for this
+        /// </summary>
+        SharpFunction CreateSharpFunction(object target, string name);
+    }
 }

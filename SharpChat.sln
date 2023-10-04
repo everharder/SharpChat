@@ -7,11 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpChat.Tests", "SharpCha
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpChat", "SharpChat\SharpChat.csproj", "{5B5CC10D-5FC0-430D-B057-221EECF99899}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpChat.Examples.Math", "SharpChat.Examples.Math\SharpChat.Examples.Math.csproj", "{AF23B241-63FA-4991-8D5B-3BCAFFDEE41A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpChat.Examples.Math", "SharpChat.Examples.Math\SharpChat.Examples.Math.csproj", "{AF23B241-63FA-4991-8D5B-3BCAFFDEE41A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{565054F6-9C35-41E6-AE24-7EA4933D9F20}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpChat.Examples.Shopping", "SharpChat.Examples.Shopping\SharpChat.Examples.Shopping.csproj", "{769E837C-CC01-4AC9-99AB-4D3C853A0287}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpChat.Examples.Shopping", "SharpChat.Examples.Shopping\SharpChat.Examples.Shopping.csproj", "{769E837C-CC01-4AC9-99AB-4D3C853A0287}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

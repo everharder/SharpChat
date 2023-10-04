@@ -1,19 +1,20 @@
 ﻿using Azure.AI.OpenAI;
 
-namespace SharpChat.Chatting;
-
-/// <summary>
-/// Factory for creating <see cref="IConversation"/>s
-/// </summary>
-public interface IConversationFactory
+namespace SharpChat.Chatting
 {
     /// <summary>
-    /// Starts a new conversation with a language model
+    /// Factory for creating <see cref="IConversation"/>s
     /// </summary>
-    IConversation StartConversation(OpenAIClient client, ChatConfiguration configuration);
+    public interface IConversationFactory
+    {
+        /// <summary>
+        /// Starts a new conversation with a language model
+        /// </summary>
+        IConversation StartConversation(OpenAIClient client, ChatConfiguration configuration);
 
-    /// <summary>
-    /// Starts a new conversation with a language model
-    /// </summary>
-    IConversation StartConversation(OpenAIClient client, string model);
+        /// <summary>
+        /// Starts a new conversation with a language model
+        /// </summary>
+        IConversation StartConversation(OpenAIClient client, string model);
+    }
 }
