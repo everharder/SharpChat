@@ -98,7 +98,8 @@ namespace SharpChat.Tests.Functions
             SharpFunctionParameter parameter = function.Parameters.First();
             parameter.Name.Should().Be("arrayValue");
             parameter.DotNetType.Should().Be(typeof(int[]));
-            parameter.JsType.Should().Be("number[]");
+            parameter.JsType.Should().Be("array");
+            parameter.ElementJsType.Should().Be("number");
             parameter.IsRequired.Should().BeTrue();
             parameter.Description.Should()
                 .NotBeNullOrWhiteSpace()

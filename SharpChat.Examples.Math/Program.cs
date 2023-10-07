@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using SharpChat;
 using SharpChat.Chatting;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 
 internal class Program
@@ -17,11 +18,7 @@ internal class Program
         // setup sharpchat
         // expose functions to the chatbot
         var services = new ServiceCollection()
-            .AddSharpChat((f,_) => f
-                .RegisterFunction(math.Add)
-                .RegisterFunction(math.Sub)
-                .RegisterFunction(math.Mul)
-                .RegisterFunction(math.Div))
+            .AddSharpChat((f,_) => f.RegisterAllFunctions(math))
             .BuildServiceProvider();
 
         // create conversation
@@ -30,7 +27,7 @@ internal class Program
         var conversation = factory.StartConversation(client, model);
 
         // start prompting
-        var input = "What is 42*PI?";
+        var input = "What is the average of these numbers: 13, 42, 69, 420, 1337?";
         Console.WriteLine($"[user] {input}");
         var output = await conversation.Prompt(input);
         Console.WriteLine($"[chat] {output}");
@@ -60,6 +57,16 @@ internal class Program
         {
             Console.WriteLine($"[function] {nameof(Div)}({f1}, {f2})");
             return f1 / f2;
+        }
+
+        [Description("Calculates the average of the given numbers")]
+        public float Average(float[] numbers)
+        {
+            if(!numbers.Any())
+            {
+                return 0;
+            }
+            return numbers.Average();
         }
     }
 

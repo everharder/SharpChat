@@ -76,6 +76,13 @@ namespace SharpChat.Functions
             {
                 {"type", parameter.JsType }
             };
+            if(parameter.IsArray)
+            {
+                definition["items"] = new Dictionary<string, object>()
+                {
+                    {"type", parameter.ElementJsType }
+                };
+            }
 
             if (!string.IsNullOrWhiteSpace(parameter.Description))
             {

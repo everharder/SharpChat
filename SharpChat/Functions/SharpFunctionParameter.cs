@@ -34,10 +34,24 @@ namespace SharpChat.Functions
 
         public string Name { get; }
         public string Description { get; }
-        public Type DotNetType { get; }
         public bool IsRequired { get; }
         public object DefaultValue { get; }
         public Type UnwrappedFromType { get; }
+        public Type DotNetType { get; }
+        public bool IsArray => DotNetType.IsArray;
+        public Type ElementType
+        {
+            get
+            {
+                if(!IsArray)
+                {
+                    throw new InvalidOperationException($"Type {DotNetType.Name} is not an array");
+                }
+                return DotNetType.GetElementType();
+            }
+        }
+        public string ElementJsType => GetJsType(ElementType);
+
 
         public SharpFunctionParameter(
             string Name,
@@ -60,7 +74,7 @@ namespace SharpChat.Functions
             Type elementType = dotNetType;
             if(dotNetType.IsArray)
             {
-                elementType = dotNetType.GetElementType();
+                return "array";
             }
 
             string jsType;
@@ -83,11 +97,6 @@ namespace SharpChat.Functions
             else
             {
                 throw new NotSupportedException($"Type '{elementType.Name}' is not supported!");
-            }
-            
-            if (dotNetType.IsArray)
-            {
-                jsType += "[]";
             }
             return jsType;
         }
