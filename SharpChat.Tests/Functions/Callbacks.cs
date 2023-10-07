@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 
 namespace SharpChat.Tests.Functions
 {
@@ -26,7 +27,7 @@ namespace SharpChat.Tests.Functions
             => HashCode.Combine(text, quantity, enabled, optionalString, number);
 
         [Description("A method with a complex value")]
-        public int MethodWithComplexValue([Unwrap] ComplexValue complexValue)
+        public int MethodWithComplexValue(ComplexValue complexValue)
             => HashCode.Combine(complexValue.Id, complexValue.Name);
 
         [Description("A method with an enum")]
@@ -36,6 +37,10 @@ namespace SharpChat.Tests.Functions
         [Description("A method with an array parameter")]
         public int MethodWithArray([Description("Oh wow, an array")] int[] arrayValue)
             => string.Join(",", arrayValue).GetHashCode();
+
+        [Description("A method with a complex array parameter")]
+        public int MethodWithComplexArray([Description("Oh wow, an with a complex array")] ComplexValue[] arrayValue) 
+            => arrayValue.Select(x => x.GetHashCode()).Sum();
 
         public class ComplexValue
         {

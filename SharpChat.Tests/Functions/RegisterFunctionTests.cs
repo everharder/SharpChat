@@ -1,6 +1,9 @@
 ﻿using FluentAssertions;
+using FluentAssertions.Common;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SharpChat.Functions;
+using SharpChat.Functions.Model;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -16,8 +19,9 @@ namespace SharpChat.Tests.Functions
         [TestMethod]
         public void RegisterFunction_NoDescription_Works()
         {
-            var cot = new SharpFunctionFactory();
-            SharpFunction function = cot.CreateSharpFunction(callbacks, nameof(callbacks.MethodWithoutDescription));
+            IServiceProvider services = Services.CreateServiceProvider();
+            IFunctionFactory cot = services.GetRequiredService<IFunctionFactory>();
+            Function function = cot.CreateFunction(callbacks, nameof(callbacks.MethodWithoutDescription));
 
             function.Should().NotBeNull();
             function.Name.Should().Be(nameof(callbacks.MethodWithoutDescription));
@@ -28,8 +32,10 @@ namespace SharpChat.Tests.Functions
         [TestMethod]
         public void RegisterFunction_NoParameters_Works()
         {
-            var cot = new SharpFunctionFactory();
-            SharpFunction function = cot.CreateSharpFunction(callbacks, nameof(callbacks.MethodWithoutParams));
+            IServiceProvider services = Services.CreateServiceProvider();
+            IFunctionFactory cot = services.GetRequiredService<IFunctionFactory>();
+
+            Function function = cot.CreateFunction(callbacks, nameof(callbacks.MethodWithoutParams));
 
             function.Should().NotBeNull();
             function.Name.Should().Be(nameof(callbacks.MethodWithoutParams));
@@ -40,8 +46,10 @@ namespace SharpChat.Tests.Functions
         [TestMethod]
         public void RegisterFunction_SingleParameter_Works()
         {
-            var cot = new SharpFunctionFactory();
-            SharpFunction function = cot.CreateSharpFunction(callbacks, nameof(callbacks.MethodWithSingleParam));
+            IServiceProvider services = Services.CreateServiceProvider();
+            IFunctionFactory cot = services.GetRequiredService<IFunctionFactory>();
+
+            Function function = cot.CreateFunction(callbacks, nameof(callbacks.MethodWithSingleParam));
 
             function.Should().NotBeNull();
             function.Name.Should().Be(nameof(callbacks.MethodWithSingleParam));
@@ -49,10 +57,11 @@ namespace SharpChat.Tests.Functions
             function.Parameters.Should().HaveCount(1);
 
 
-            SharpFunctionParameter parameter = function.Parameters.First();
+            Property parameter = function.Parameters.First();
+            parameter.Should().BeOfType<PrimitiveProperty>();
             parameter.Name.Should().Be("text");
             parameter.DotNetType.Should().Be(typeof(string));
-            parameter.JsType.Should().Be("string");
+            parameter.SchemaType.Should().Be("string");
             parameter.IsRequired.Should().BeTrue();
             parameter.Description.Should()
                 .NotBeNullOrWhiteSpace()
@@ -63,45 +72,98 @@ namespace SharpChat.Tests.Functions
         [TestMethod]
         public void RegisterFunction_Enum_Works()
         {
-            var cot = new SharpFunctionFactory();
-            SharpFunction function = cot.CreateSharpFunction(callbacks, nameof(callbacks.MethodWithEnum));
+            IServiceProvider services = Services.CreateServiceProvider();
+            IFunctionFactory cot = services.GetRequiredService<IFunctionFactory>();
+
+            Function function = cot.CreateFunction(callbacks, nameof(callbacks.MethodWithEnum));
 
             function.Should().NotBeNull();
             function.Name.Should().Be(nameof(callbacks.MethodWithEnum));
             function.Description.Should().NotBeNullOrWhiteSpace();
             function.Parameters.Should().HaveCount(1);
 
-            SharpFunctionParameter parameter = function.Parameters.First();
+            Property parameter = function.Parameters.First();
+            parameter.Should().BeOfType<EnumProperty>();
             parameter.Name.Should().Be("enumValue");
             parameter.DotNetType.Should().Be(typeof(DummyEnum));
-            parameter.JsType.Should().Be("string");
+            parameter.SchemaType.Should().Be("string");
             parameter.IsRequired.Should().BeTrue();
             parameter.Description.Should()
                 .NotBeNullOrWhiteSpace()
                 .And
                 .NotBe(function.Description);
-            parameter.EnumOptions.Should()
-                .BeEquivalentTo(Enum.GetValues(typeof(DummyEnum)).Cast<DummyEnum>().Select(x => x.ToString()));
         }
 
         [TestMethod]
         public void RegisterFunction_ArrayType_Works()
         {
-            var cot = new SharpFunctionFactory();
-            SharpFunction function = cot.CreateSharpFunction(callbacks, nameof(callbacks.MethodWithArray));
+            IServiceProvider services = Services.CreateServiceProvider();
+            IFunctionFactory cot = services.GetRequiredService<IFunctionFactory>();
+
+            Function function = cot.CreateFunction(callbacks, nameof(callbacks.MethodWithArray));
 
             function.Should().NotBeNull();
             function.Name.Should().Be(nameof(callbacks.MethodWithArray));
             function.Description.Should().NotBeNullOrWhiteSpace();
             function.Parameters.Should().HaveCount(1);
 
-            SharpFunctionParameter parameter = function.Parameters.First();
+            Property parameter = function.Parameters.First();
+            parameter.Should().BeOfType<ArrayProperty>();
             parameter.Name.Should().Be("arrayValue");
             parameter.DotNetType.Should().Be(typeof(int[]));
-            parameter.JsType.Should().Be("array");
-            parameter.ElementJsType.Should().Be("number");
+            parameter.SchemaType.Should().Be("array");
             parameter.IsRequired.Should().BeTrue();
             parameter.Description.Should()
+                .NotBeNullOrWhiteSpace()
+                .And
+                .NotBe(function.Description);
+
+            ArrayProperty arrParameter = parameter as ArrayProperty;
+            arrParameter.Item.Should().BeOfType<PrimitiveProperty>();
+
+            PrimitiveProperty elementParameter = arrParameter.Item as PrimitiveProperty;
+            elementParameter.Name.Should().Be("arrayValue");
+            elementParameter.DotNetType.Should().Be(typeof(int));
+            elementParameter.SchemaType.Should().Be("number");
+            elementParameter.IsRequired.Should().BeFalse();
+            elementParameter.Description.Should()
+                .NotBeNullOrWhiteSpace()
+                .And
+                .NotBe(function.Description);
+        }
+
+        [TestMethod]
+        public void RegisterFunction_ComplexArrayType_Works()
+        {
+            IServiceProvider services = Services.CreateServiceProvider();
+            IFunctionFactory cot = services.GetRequiredService<IFunctionFactory>();
+
+            Function function = cot.CreateFunction(callbacks, nameof(callbacks.MethodWithComplexArray));
+
+            function.Should().NotBeNull();
+            function.Name.Should().Be(nameof(callbacks.MethodWithComplexArray));
+            function.Description.Should().NotBeNullOrWhiteSpace();
+            function.Parameters.Should().HaveCount(1);
+
+            Property parameter = function.Parameters.First();
+            parameter.Name.Should().Be("arrayValue");
+            parameter.DotNetType.Should().Be(typeof(int[]));
+            parameter.SchemaType.Should().Be("array");
+            parameter.IsRequired.Should().BeTrue();
+            parameter.Description.Should()
+                .NotBeNullOrWhiteSpace()
+                .And
+                .NotBe(function.Description);
+
+            ArrayProperty arrParameter = parameter as ArrayProperty;
+            arrParameter.Item.Should().BeOfType<ObjectProperty>();
+
+            ObjectProperty elementParameter = arrParameter.Item as ObjectProperty;
+            elementParameter.Name.Should().Be("arrayValue");
+            elementParameter.DotNetType.Should().Be(typeof(ComplexValue));
+            elementParameter.SchemaType.Should().Be("object");
+            elementParameter.IsRequired.Should().BeFalse();
+            elementParameter.Description.Should()
                 .NotBeNullOrWhiteSpace()
                 .And
                 .NotBe(function.Description);
@@ -110,7 +172,9 @@ namespace SharpChat.Tests.Functions
         [TestMethod]
         public void RegisterAllFunctions_WhenCalled_Works()
         {
-            FunctionService cot = new(new SharpFunctionFactory());
+            IServiceProvider services = Services.CreateServiceProvider();
+            IFunctionRegistry cot = services.GetRequiredService<IFunctionRegistry>();
+
             cot.RegisterAllFunctions(callbacks);
 
             var registered = cot.GetRegisteredFunctions();
@@ -127,8 +191,9 @@ namespace SharpChat.Tests.Functions
         [TestMethod]
         public void RegisterFunction_MultipleParameters()
         {
-            var cot = new SharpFunctionFactory();
-            SharpFunction function = cot.CreateSharpFunction(callbacks, nameof(callbacks.MethodWithMultipleParams));
+            IServiceProvider services = Services.CreateServiceProvider();
+            IFunctionFactory cot = services.GetRequiredService<IFunctionFactory>();
+            Function function = cot.CreateFunction(callbacks, nameof(callbacks.MethodWithMultipleParams));
 
             function.Should().NotBeNull();
             function.Name.Should().Be(nameof(callbacks.MethodWithMultipleParams));
@@ -150,7 +215,7 @@ namespace SharpChat.Tests.Functions
                 var (name, dotNetType, jsType, isRequired, defaultValue) = expectedParameters[index];
                 parameter.Name.Should().Be(name);
                 parameter.DotNetType.Should().Be(dotNetType);
-                parameter.JsType.Should().Be(jsType);
+                parameter.SchemaType.Should().Be(jsType);
                 parameter.IsRequired.Should().Be(isRequired);
                 parameter.Description.Should()
                     .NotBeNullOrWhiteSpace()
@@ -165,8 +230,9 @@ namespace SharpChat.Tests.Functions
         [TestMethod]
         public void RegisterFunction_WithComplexValue_DescriptionsUnwrapped()
         {
-            var cot = new SharpFunctionFactory();
-            SharpFunction function = cot.CreateSharpFunction(callbacks, nameof(callbacks.MethodWithComplexValue));
+            IServiceProvider services = Services.CreateServiceProvider();
+            IFunctionFactory cot = services.GetRequiredService<IFunctionFactory>();
+            Function function = cot.CreateFunction(callbacks, nameof(callbacks.MethodWithComplexValue));
 
             function.Should().NotBeNull();
             function.Name.Should().Be(nameof(callbacks.MethodWithComplexValue));

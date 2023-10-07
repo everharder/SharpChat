@@ -64,13 +64,17 @@ internal class Program
         }
 
         [Description("Commit the purchase of some tea. Returns true if the order was successfully placed.")]
-        public bool PlaceOrder(
-            [Description("The type of tea")] TeaType teaType, 
-            [Description("The amount of tea to buy in grams")] float weight,
-            [Description("The total price of the purchase")] float amount)
+        public bool PlaceOrder(Order order)
         {
-            Console.WriteLine($"[function] PlaceOrder({teaType}, {weight}, {amount})");
+            Console.WriteLine($"[function] PlaceOrder({order.TeaType}, {order.Weight}, {order.Amount})");
             return true;
-        } 
+        }
+
+        [Description("A customer order of tea")]
+        public record Order([Description("The type of tea")] TeaType TeaType,
+            [Description("The amount of tea to buy in grams")] float Weight,
+            [Description("The total price of the purchase")] float Amount)
+        {
+        }
     }
 }

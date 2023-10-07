@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Azure.AI.OpenAI;
+using SharpChat.Functions.Model;
 
 namespace SharpChat.Functions
 {

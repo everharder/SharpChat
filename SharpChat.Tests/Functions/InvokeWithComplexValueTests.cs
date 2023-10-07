@@ -2,6 +2,7 @@
 using System.Text.Json;
 using Azure.AI.OpenAI;
 using FluentAssertions;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SharpChat.Functions;
 using static SharpChat.Tests.Functions.Callbacks;
@@ -16,8 +17,10 @@ namespace SharpChat.Tests.Functions
         [TestMethod]
         public void CallFunctionWithMultipleParameters_OptionalParametersPassed_Works()
         {
-            FunctionService cot = new FunctionService(new SharpFunctionFactory());
-            cot.RegisterFunction(callbacks, nameof(callbacks.MethodWithComplexValue));
+            IServiceProvider services = Services
+                .CreateServiceProvider(r => r.RegisterFunction(callbacks.MethodWithComplexValue));
+
+            IFunctionInvoker cot = services.GetRequiredService<IFunctionInvoker>();
 
             string payload = JsonSerializer.Serialize(new ComplexValue(420, "yeah"));
             object result = cot.CallFunction(new FunctionCall(nameof(callbacks.MethodWithComplexValue), payload));
@@ -29,8 +32,10 @@ namespace SharpChat.Tests.Functions
         [TestMethod]
         public void CallFunctionWithMultipleParameters_OnlyRequiredParametersPassed_Works()
         {
-            FunctionService cot = new FunctionService(new SharpFunctionFactory());
-            cot.RegisterFunction(callbacks, nameof(callbacks.MethodWithComplexValue));
+            IServiceProvider services = Services
+                .CreateServiceProvider(r => r.RegisterFunction(callbacks.MethodWithComplexValue));
+
+            IFunctionInvoker cot = services.GetRequiredService<IFunctionInvoker>();
 
             string payload = JsonSerializer.Serialize(new { Id = 420 });
             object result = cot.CallFunction(new FunctionCall(nameof(callbacks.MethodWithComplexValue), payload));

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SharpChat.Chatting;
 using SharpChat.Functions;
+using SharpChat.Utility;
 using System;
 
 namespace SharpChat
@@ -9,15 +10,17 @@ namespace SharpChat
     {
         public static IServiceCollection AddSharpChat(this IServiceCollection services, Action<IFunctionRegistry, IServiceProvider> functionRegistryAction = null)
             => services
-                .AddSingleton<FunctionService>()
-                .AddSingleton<IFunctionInvoker>(s => s.GetRequiredService<FunctionService>())
-                .AddSingleton<IFunctionRegistry>(s =>
+                .AddSingleton<IFunctionInvoker, FunctionInvoker>()
+                .AddSingleton(c =>
                 {
-                    FunctionService functionService = s.GetRequiredService<FunctionService>();
-                    functionRegistryAction?.Invoke(functionService, s);
-                    return functionService;
+                    FunctionRegistry registry = new FunctionRegistry(c.GetRequiredService<IFunctionFactory>(), c.GetRequiredService<ISerializer>());
+                    functionRegistryAction?.Invoke(registry, c);
+                    return registry;
                 })
+                .AddSingleton<IFunctionRegistry>(s => s.GetRequiredService<FunctionRegistry>())
+                .AddSingleton<IFunctionRegistryInternal>(s => s.GetRequiredService<FunctionRegistry>())
                 .AddSingleton<IConversationFactory, ConversationFactory>()
-                .AddSingleton<ISharpFunctionFactory, SharpFunctionFactory>();
+                .AddSingleton<ISerializer, JsonSerializer>()
+                .AddSingleton<IFunctionFactory, FunctionFactory>();  
     }
 }
