@@ -53,6 +53,7 @@ namespace SharpChat.Functions.Model
             Description = description;
             DotNetType = dotNetType ?? throw new ArgumentNullException(nameof(dotNetType));
             IsRequired = isRequired;
+            DefaultValue = defaultValue;
         }
 
         /// <inheritdoc/>

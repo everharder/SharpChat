@@ -27,7 +27,7 @@ namespace SharpChat.Tests.Functions
             => HashCode.Combine(text, quantity, enabled, optionalString, number);
 
         [Description("A method with a complex value")]
-        public int MethodWithComplexValue(ComplexValue complexValue)
+        public int MethodWithComplexValue([Description("yeah complex value")] ComplexValue complexValue)
             => HashCode.Combine(complexValue.Id, complexValue.Name);
 
         [Description("A method with an enum")]

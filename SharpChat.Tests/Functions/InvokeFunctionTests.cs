@@ -21,7 +21,12 @@ namespace SharpChat.Tests.Functions
         [TestMethod]
         public void FunctionNotRegistered_WhenCalled_Throws()
         {
-            FluentActions.Invoking(() => Call(callbacks.MethodWithoutParams))
+            IServiceProvider services = Services
+               .CreateServiceProvider();
+
+            IFunctionInvoker invoker = services.GetRequiredService<IFunctionInvoker>();
+
+            FluentActions.Invoking(() => invoker.CallFunction(new FunctionCall(nameof(callbacks.MethodWithoutParams), null)))
                 .Should()
                 .Throw<InvalidOperationException>();
         }
@@ -95,7 +100,7 @@ namespace SharpChat.Tests.Functions
         public void CallFunctionWithSingleParameter_TooFewParameterPassed_ReturnsErrorString()
         {
             string result = Call(callbacks.MethodWithSingleParam, new Dictionary<string, object>()) as string;
-            result.Should().Be("Parameter 'text' is required!");
+            result.Should().Be("Parameter 'text' is required, but was not provided!");
         }
 
         [TestMethod]

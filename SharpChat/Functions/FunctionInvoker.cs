@@ -45,8 +45,8 @@ namespace SharpChat.Functions
                 List<object> orderedParameters = new List<object>();
                 if (!string.IsNullOrWhiteSpace(call.Arguments))
                 {
-                    Dictionary<string, string> parameters = serializer.Deserialize<Dictionary<string, string>>(call.Arguments)
-                        ?.ToDictionary(k => k.Key, v => v.Value, StringComparer.OrdinalIgnoreCase)
+                    Dictionary<string, string> parameters = serializer.Deserialize<Dictionary<string, object>>(call.Arguments)
+                        ?.ToDictionary(k => k.Key, v => v.Value?.ToString(), StringComparer.OrdinalIgnoreCase)
                         ?? new Dictionary<string, string>();
 
                     foreach(Property parameter in function.Parameters)
@@ -59,7 +59,7 @@ namespace SharpChat.Functions
 
                         if(parameterValue == null && parameter.IsRequired)
                         {
-                            throw new Exception($"parameter {parameter.Name} is required, but was not provided");
+                            throw new Exception($"Parameter '{parameter.Name}' is required, but was not provided!");
                         }
 
                         orderedParameters.Add(parameterValue ?? parameter.DefaultValue);

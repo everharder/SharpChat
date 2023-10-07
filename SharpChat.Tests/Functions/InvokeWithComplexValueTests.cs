@@ -22,7 +22,10 @@ namespace SharpChat.Tests.Functions
 
             IFunctionInvoker cot = services.GetRequiredService<IFunctionInvoker>();
 
-            string payload = JsonSerializer.Serialize(new ComplexValue(420, "yeah"));
+            string payload = JsonSerializer.Serialize(new
+            {
+                complexValue = new ComplexValue(420, "yeah")
+            });
             object result = cot.CallFunction(new FunctionCall(nameof(callbacks.MethodWithComplexValue), payload));
 
             int expected = HashCode.Combine(420, "yeah");
@@ -37,7 +40,10 @@ namespace SharpChat.Tests.Functions
 
             IFunctionInvoker cot = services.GetRequiredService<IFunctionInvoker>();
 
-            string payload = JsonSerializer.Serialize(new { Id = 420 });
+            string payload = JsonSerializer.Serialize(new
+            {
+                complexValue = new ComplexValue(420)
+            });
             object result = cot.CallFunction(new FunctionCall(nameof(callbacks.MethodWithComplexValue), payload));
 
             int expected = HashCode.Combine(420, "foobar");

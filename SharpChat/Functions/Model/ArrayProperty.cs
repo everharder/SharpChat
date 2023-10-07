@@ -1,6 +1,7 @@
 ﻿using SharpChat.Utility;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 
@@ -45,9 +46,20 @@ namespace SharpChat.Functions.Model
         /// <inheritdoc/>
         public override object DeserializeValue(string data, ISerializer serializer)
         {
-            string[] strings = serializer.Deserialize<string[]>(data)
+            string[] strings = serializer.Deserialize<object[]>(data)?
+                .Select(x => x?.ToString())
+                .ToArray()
                 ?? Array.Empty<string>();
-            return strings.Select(x => Item.DeserializeValue(x, serializer)).ToArray();
+
+            object[] arr = strings
+                .Select(x => Item.DeserializeValue(x, serializer))
+            .ToArray();
+
+            // change object[] to DotNetType[]
+            Array destinationArray = Array.CreateInstance(Item.DotNetType, arr.Length);
+            Array.Copy(arr, destinationArray, arr.Length);
+
+            return destinationArray;
         }
     }
 }

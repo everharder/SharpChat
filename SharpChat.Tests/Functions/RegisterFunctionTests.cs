@@ -125,7 +125,7 @@ namespace SharpChat.Tests.Functions
             elementParameter.Name.Should().Be("arrayValue");
             elementParameter.DotNetType.Should().Be(typeof(int));
             elementParameter.SchemaType.Should().Be("number");
-            elementParameter.IsRequired.Should().BeFalse();
+            elementParameter.IsRequired.Should().BeTrue();
             elementParameter.Description.Should()
                 .NotBeNullOrWhiteSpace()
                 .And
@@ -147,7 +147,7 @@ namespace SharpChat.Tests.Functions
 
             Property parameter = function.Parameters.First();
             parameter.Name.Should().Be("arrayValue");
-            parameter.DotNetType.Should().Be(typeof(int[]));
+            parameter.DotNetType.Should().Be(typeof(ComplexValue[]));
             parameter.SchemaType.Should().Be("array");
             parameter.IsRequired.Should().BeTrue();
             parameter.Description.Should()
@@ -162,7 +162,7 @@ namespace SharpChat.Tests.Functions
             elementParameter.Name.Should().Be("arrayValue");
             elementParameter.DotNetType.Should().Be(typeof(ComplexValue));
             elementParameter.SchemaType.Should().Be("object");
-            elementParameter.IsRequired.Should().BeFalse();
+            elementParameter.IsRequired.Should().BeTrue();
             elementParameter.Description.Should()
                 .NotBeNullOrWhiteSpace()
                 .And
@@ -237,14 +237,9 @@ namespace SharpChat.Tests.Functions
             function.Should().NotBeNull();
             function.Name.Should().Be(nameof(callbacks.MethodWithComplexValue));
             function.Description.Should().NotBeNullOrWhiteSpace();
-            function.Parameters.Should().HaveCount(2);
+            function.Parameters.Should().HaveCount(1);
 
             function.Parameters.First().Description.Should()
-                .NotBeNullOrWhiteSpace()
-                .And
-                .NotBe(function.Description);
-
-            function.Parameters.Skip(1).First().Description.Should()
                 .NotBeNullOrWhiteSpace()
                 .And
                 .NotBe(function.Description);

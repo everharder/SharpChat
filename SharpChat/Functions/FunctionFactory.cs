@@ -85,7 +85,7 @@ namespace SharpChat.Functions
                     defaultValue: defaultValue);
             }
 
-            if (dotNetType != typeof(string) || dotNetType.IsPrimitive)
+            if (dotNetType == typeof(string) || dotNetType.IsPrimitive)
             {
                 return new PrimitiveProperty(
                     name: name,
