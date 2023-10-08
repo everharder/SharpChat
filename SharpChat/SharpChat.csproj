@@ -2,8 +2,13 @@
 
 	<PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>SharpChat</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>everharder</Authors>
+    <Description>Use CSharp delegates to expose functions to ChatGPT!</Description>
 
-	</PropertyGroup>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+  </PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Azure.AI.OpenAI" Version="1.0.0-beta.8" />
