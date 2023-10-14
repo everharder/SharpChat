@@ -29,7 +29,7 @@ internal class Program
         var conversation = factory.StartConversation(client, model);
 
         // start prompting
-        var input = "Hi, please pack me up some nice matcha for 10€ and place the order.";
+        var input = "Hi, please order me matcha for 10€ and black tea for 20€. Immediately place the order.";
         Console.OutputEncoding = Encoding.UTF8;
         Console.WriteLine($"[user] {input}");
         var output = await conversation.Prompt(input);
@@ -56,24 +56,28 @@ internal class Program
             { TeaType.Herbal, 4.0f },
         };
 
-        [Description("Gets the EUR price of 100g of a certain tea type.")]
+        [Description("Gets the EUR price of 100 grams of a certain tea type.")]
         public float GetPrice(TeaType teaType)
         {
-            Console.WriteLine($"[function] GetPrice({teaType})");
-            return pricePer100g[teaType];
+            var price = pricePer100g[teaType];
+            Console.WriteLine($"[function] GetPrice({teaType}) = {price}");
+            return price;
         }
 
         [Description("Commit the purchase of some tea. Returns true if the order was successfully placed.")]
-        public bool PlaceOrder(Order order)
+        public bool PlaceOrder(Order[] orders)
         {
-            Console.WriteLine($"[function] PlaceOrder({order.TeaType}, {order.Weight}, {order.Amount})");
+            foreach (Order order in orders)
+            {
+                Console.WriteLine($"[function] PlaceOrder({order.TeaType}, {order.Grams}, {order.Price})");
+            }
             return true;
         }
 
         [Description("A customer order of tea")]
         public record Order([Description("The type of tea")] TeaType TeaType,
-            [Description("The amount of tea to buy in grams")] float Weight,
-            [Description("The total price of the purchase")] float Amount)
+            [Description("The weight (quantity) of the tea type in grams")] float Grams,
+            [Description("How much is payed for the tea by the customer")] float Price)
         {
         }
     }
