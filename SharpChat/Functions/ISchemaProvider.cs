@@ -12,6 +12,6 @@ namespace SharpChat.Functions
         /// <summary>
         /// Create the json schema for the property
         /// </summary>
-        Dictionary<string, object> GetSchema();
+        Dictionary<string, object> GetParametersSchema();
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Xml.Serialization;
 
 namespace SharpChat.Functions.Model
 {
@@ -22,21 +23,11 @@ namespace SharpChat.Functions.Model
         }
 
         /// <inheritdoc/>
-        public Dictionary<string, object> GetSchema()
+        public Dictionary<string, object> GetParametersSchema()
         {
-            Dictionary<string, object> schema = new Dictionary<string, object>()
-            {
-                { "name", Name },
-                { "description", Description },
-            };
-            if(Parameters.Any())
-            {
-                schema["parameters"] = new Dictionary<string, object>()
-                {
-                    {"type", "object" },
-                    {"properties", Parameters.ToDictionary(k => k.Name, v => v.GetSchema()) }
-                };
-            }
+            Dictionary<string, object> schema = new Dictionary<string, object>();
+            schema["type"] = "object";
+            schema["properties"] = Parameters.ToDictionary(k => k.Name, v => v.GetParametersSchema());
             return schema;
         }
     }

@@ -79,8 +79,8 @@ namespace SharpChat.Functions
             {
                 Name = x.Name,
                 Description = x.Description,
-                Parameters = BinaryData.FromString(serializer.Serialize(x.GetSchema()))
-            }).ToList();
+                Parameters = BinaryData.FromString(serializer.Serialize(x.GetParametersSchema()))
+            }).OrderBy(x => x.Name).ToList();
         }
 
         private string NormalizeFunctionName(string functionName)

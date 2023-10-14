@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using SharpChat;
 using SharpChat.Chatting;
+using SharpChat.Functions;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 
@@ -21,6 +22,9 @@ internal class Program
             .AddSharpChat((f,_) => f.RegisterAllFunctions(math))
             .BuildServiceProvider();
 
+        var registry = services.GetRequiredService<IFunctionRegistry>();
+        var functions = registry.GetRegisteredFunctions();
+
         // create conversation
         var factory = services.GetRequiredService<IConversationFactory>();
         var client = new OpenAIClient(apikey);
@@ -35,6 +39,7 @@ internal class Program
 
     public class MyMath
     {
+        [Description("result = f1 + f2")]
         public float Add(float f1, float f2)
         {
             Console.WriteLine($"[function] {nameof(Add)}({f1}, {f2})");

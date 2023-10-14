@@ -57,12 +57,18 @@ namespace SharpChat.Functions.Model
         }
 
         /// <inheritdoc/>
-        public virtual Dictionary<string, object> GetSchema() 
-            => new Dictionary<string, object>()
+        public virtual Dictionary<string, object> GetParametersSchema()
+        {
+            Dictionary<string, object> schema = new Dictionary<string, object>()
             {
                 { "type", SchemaType },
-                { "description", Description }
             };
+            if (!string.IsNullOrWhiteSpace(Description))
+            {
+                schema["description"] = Description;
+            }
+            return schema;
+        }
 
         /// <summary>
         /// Deserialize a value of the property type

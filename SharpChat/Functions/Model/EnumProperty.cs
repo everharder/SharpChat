@@ -20,9 +20,9 @@ namespace SharpChat.Functions.Model
         }
         
         /// <inheritdoc/>
-        public override Dictionary<string, object> GetSchema()
+        public override Dictionary<string, object> GetParametersSchema()
         {
-            Dictionary<string, object> schema = base.GetSchema();
+            Dictionary<string, object> schema = base.GetParametersSchema();
             schema["enum"] = Enum
                 .GetValues(DotNetType)
                 .Cast<object>()

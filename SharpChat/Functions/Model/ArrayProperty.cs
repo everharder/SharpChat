@@ -36,10 +36,10 @@ namespace SharpChat.Functions.Model
         }
 
         /// <inheritdoc/>
-        public override Dictionary<string, object> GetSchema()
+        public override Dictionary<string, object> GetParametersSchema()
         {
-            Dictionary<string, object> schema = base.GetSchema();
-            schema["items"] = Item.GetSchema();
+            Dictionary<string, object> schema = base.GetParametersSchema();
+            schema["items"] = Item.GetParametersSchema();
             return schema;
         }
 
