@@ -20,6 +20,9 @@ namespace SharpChat.Functions.Model
         /// </summary>
         public Property Item { get; }
 
+        /// <summary>
+        /// Creates a new <see cref="ArrayProperty"/> instance
+        /// </summary>
         public ArrayProperty(
             string name, 
             string description, 

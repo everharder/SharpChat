@@ -3,6 +3,9 @@ using System.Threading.Tasks;
 
 namespace SharpChat.Chatting
 {
+    /// <summary>
+    /// Interface for a chatbot conversation
+    /// </summary>
     public interface IConversation
     {
         /// <summary>

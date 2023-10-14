@@ -4,6 +4,9 @@ using System.Text;
 
 namespace SharpChat.Utility
 {
+    /// <summary>
+    /// Serializer abstraction
+    /// </summary>
     public interface ISerializer
     {
         /// <summary>

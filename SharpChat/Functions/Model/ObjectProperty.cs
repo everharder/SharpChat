@@ -20,6 +20,9 @@ namespace SharpChat.Functions.Model
         /// <inheritdoc/>
         public override string SchemaType => "object";
 
+        /// <summary>
+        /// Creates a new <see cref="ObjectProperty"/> instance
+        /// </summary>
         public ObjectProperty(
             string name, 
             string description, 

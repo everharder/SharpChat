@@ -5,11 +5,17 @@ using System.Linq;
 
 namespace SharpChat.Functions.Model
 {
+    /// <summary>
+    /// A property of enum type
+    /// </summary>
     public class EnumProperty : Property
     {
         /// <inheritdoc/>
         public override string SchemaType => "string";
 
+        /// <summary>
+        /// Creates a new instance of <see cref="EnumProperty"/>
+        /// </summary>
         public EnumProperty(
             string name, 
             string description, 

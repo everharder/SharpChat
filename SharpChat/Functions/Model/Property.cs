@@ -42,6 +42,9 @@ namespace SharpChat.Functions.Model
         /// </summary>
         public object DefaultValue { get; }
 
+        /// <summary>
+        /// Creates a new <see cref="Property"/> instance
+        /// </summary>
         public Property(string name, string description, Type dotNetType, bool isRequired, object defaultValue)
         {
             if (string.IsNullOrWhiteSpace(name))

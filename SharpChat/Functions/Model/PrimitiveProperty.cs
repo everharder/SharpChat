@@ -14,6 +14,9 @@ namespace SharpChat.Functions.Model
         /// <inheritdoc/>
         public override string SchemaType => GetJsType(DotNetType);
 
+        /// <summary>
+        /// Create a new <see cref="PrimitiveProperty"/> instance
+        /// </summary>
         public PrimitiveProperty(string name, 
             string description, 
             Type dotNetType,
