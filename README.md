@@ -20,8 +20,7 @@ Simply call `AddSharpChat` to register the functions you want the chatbot to use
 var services = new ServiceCollection()
     .AddSharpChat((f, _) => f
         .RegisterFunction(myFunc1)
-        .RegisterFunction(myFunc2)
-        ...
+        .RegisterFunction(myFunc2))
     .BuildServiceProvider();
 ```
 
