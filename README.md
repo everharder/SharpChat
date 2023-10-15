@@ -25,11 +25,12 @@ var services = new ServiceCollection()
 ```
 
 Start a conversation, passing an OpenAI API client initialized with your API key.
+For best results you should use the `gpt-4` model. To be more cost efficient `gpt-3.5-turbo-0613` can also be used.
 
 ```csharp
 var factory = services.GetRequiredService<IConversationFactory>();
 var client = new OpenAIClient(API_KEY);
-var conversation = factory.StartConversation(client, model);
+var conversation = factory.StartConversation(client, "gpt-4");
 ```
 
 SharpChat automatically exposes your registerd functions to the conversation, allowing the chatbot to call them!
