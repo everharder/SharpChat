@@ -17,13 +17,12 @@ SharpChat introduces schema engineering as a replacement for prompt engineering.
     
     <projectUrl>https://github.com/everharder/SharpChat</projectUrl>
     <licenseUrl>https://github.com/everharder/SharpChat/blob/main/LICENSE</licenseUrl>
-    <iconUrl>https://github.com/everharder/SharpChat/blob/main/SharpChat/icon.png</iconUrl>
+    <iconUrl>https://github.com/everharder/SharpChat/blob/main/icon.png</iconUrl>
 
     <dependencies>
       <dependency id="Azure.AI.OpenAI" version="1.0.0-beta.8" />
       <dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="7.0" />
       <dependency id="Azure.AI.OpenAI" version="1.0.0-beta.8" />
-
     </dependencies>
   </metadata>
 </package>
