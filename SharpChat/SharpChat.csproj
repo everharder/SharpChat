@@ -4,15 +4,29 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>SharpChat</PackageId>
     <Version>1.0.0</Version>
-    <Authors>everharder</Authors>
+    <Authors>Daniel Eberharter</Authors>
     <Description>Use CSharp delegates to expose functions to ChatGPT!</Description>
     <IsPackable>true</IsPackable>
+    <PackageTags>OpenAI;ChatGPT</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <PackageProjectUrl>https://github.com/everharder/SharpChat</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/everharder/SharpChat</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageIcon>icon.png</PackageIcon>
+    <RepositoryType>git</RepositoryType>
+    <Description>
+      SharpChat is a C# library that tries to offer functionality similar to TypeChat, making it seamless to construct natural language interfaces using types.
+
+      Building natural language interfaces can be challenging. Traditional methods often rely on intricate decision trees to discern intent and gather necessary inputs for actions. The advent of Large Language Models (LLMs) has simplified this process by allowing natural language inputs from users to be matched with intents. However, this also brings its own set of challenges, such as constraining the model's reply for safety, structuring model responses for further processing, and ensuring the model's reply is valid. While prompt engineering aims to address these issues, it can be complex and fragile.
+
+      SharpChat introduces schema engineering as a replacement for prompt engineering.
+    </Description>
   </PropertyGroup>
 
   <ItemGroup>
     <None Include="..\README.md" Pack="true" PackagePath="" />
+    <None Include="icon.png" Pack="true" PackagePath="\"/>
   </ItemGroup>
 
 	<ItemGroup>
@@ -21,4 +35,12 @@
 		<InternalsVisibleTo Include="SharpChat.Tests" />
 	</ItemGroup>
 
+  <Target Name="SetPackageVersionSuffix" BeforeTargets="BeforeBuild">
+    <Exec Command="git rev-parse --short HEAD" ConsoleToMSBuild="true">
+      <Output TaskParameter="ConsoleOutput" PropertyName="GitCommitHash" />
+    </Exec>
+    <PropertyGroup>
+      <RepositoryCommit>$(GitCommitHash)</RepositoryCommit>
+    </PropertyGroup>
+  </Target>
 </Project>
