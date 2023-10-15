@@ -12,19 +12,27 @@ dotnet add package SharpChat
 
 ## Get Started
 
-SharpChat is setup during initialization of your services.
+1. SharpChat is setup during initialization of your services.
 Simply call `AddSharpChat` to register the functions you want the chatbot to use.
 
 ```csharp
-
 var services = new ServiceCollection()
-    .AddSharpChat((f, _) => f
-        .RegisterFunction(myFunc1)
-        .RegisterFunction(myFunc2))
+    .AddSharpChat((f, s) => f
+        .RegisterFunction(s.GetRequiredService<IMyService>().myFunc1)
+        .RegisterFunction(s.GetRequiredService<IMyService>().myFunc1))
     .BuildServiceProvider();
 ```
 
-Start a conversation, passing an OpenAI API client initialized with your API key.
+You can also expose all functions of your service at once:
+
+```csharp
+var services = new ServiceCollection()
+    .AddSharpChat((f, s) => f
+        .RegisterAllFunctions(s.GetRequiredService<IMyService>())
+    .BuildServiceProvider();
+```
+
+2. Start a conversation, passing an OpenAI API client initialized with your API key.
 For best results you should use the `gpt-4` model. To be more cost efficient `gpt-3.5-turbo-0613` can also be used.
 
 ```csharp
@@ -34,7 +42,8 @@ var conversation = factory.StartConversation(client, "gpt-4");
 ```
 
 SharpChat automatically exposes your registerd functions to the conversation, allowing the chatbot to call them!
-Now you can start chatting!
+
+3. Start chatting!
 
 ```csharp
 var output = await conversation.Prompt("What is the meaning of life?");
