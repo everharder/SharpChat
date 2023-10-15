@@ -29,7 +29,7 @@ Start a conversation, passing an OpenAI API client initialized with your API key
 
 ```csharp
 var factory = services.GetRequiredService<IConversationFactory>();
-var client = new OpenAIClient(apikey);
+var client = new OpenAIClient(API_KEY);
 var conversation = factory.StartConversation(client, model);
 ```
 
@@ -37,7 +37,7 @@ SharpChat automatically exposes your registerd functions to the conversation, al
 Now you can start chatting!
 
 ```csharp
-var output = await conversation.Prompt("...");
+var output = await conversation.Prompt("What is the meaning of life?");
 ```
 
 **Take a look at `SharpChat.Examples.Shopping` and `SharpChat.Examples.Math` for inspiration on how to use SharpChat.**
