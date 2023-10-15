@@ -4,6 +4,17 @@
 SharpChat is a C# library that tries to offer functionality similar to [TypeChat](https://github.com/microsoft/TypeChat), making it seamless to construct natural language interfaces using types.
 Schema enginerring is the new prompt engineering!
 
+With SharpChat you can let ChatGPT call your full typed services, with only a few lines of code!
+
+```
+[user] Hi, please order me matcha for 10€ and black tea for 20€. Immediately place the order.    
+[call] GetPrice(Tea: Matcha)
+[call] GetPrice(Tea: Black)
+[call] PlaceOrder(Tea: Matcha   Weight: 122 g    Price: 10 EUR)
+[call] PlaceOrder(Tea: Black    Weight: 465 g    Price: 20 EUR)
+[chat] Your order for 122 grams of Matcha tea and 465 grams of Black tea has been placed successfully. Enjoy your tea!
+```
+
 ## Installation
 
 ```
