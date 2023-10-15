@@ -6,7 +6,9 @@ Schema enginerring is the new prompt engineering!
 
 ## Installation
 
-WIP
+```
+dotnet add package SharpChat
+```
 
 ## Get Started
 
