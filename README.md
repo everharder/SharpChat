@@ -4,9 +4,7 @@
 SharpChat is a C# library that tries to offer functionality similar to [TypeChat](https://github.com/microsoft/TypeChat), making it seamless to construct natural language interfaces using types.
 Schema enginerring is the new prompt engineering!
 
-With SharpChat you can let ChatGPT call your full typed services, with only a few lines of code!
-
-
+With SharpChat you can let ChatGPT call your full typed services!
 Here's how it works in action:
 ```
 [user] Hi, please order me matcha for 10€ and black tea for 20€. Immediately place the order.    
@@ -25,7 +23,26 @@ dotnet add package SharpChat
 
 ## Get Started
 
-1. SharpChat is setup during initialization of your services.
+1. Annotate your logic with `[Description]` attributes to give the chatbot some context
+```csharp
+        [Description("Commit the purchase of some tea. Returns true if the order was successfully placed.")]
+        public bool PlaceOrder(Order order)
+        {
+        ...
+        }
+```
+
+`[Description]` attrbutes should also be used to annotate parameter types!
+```csharp
+[Description("A customer order of tea")]
+public record Order([Description("The type of tea")] TeaType TeaType,
+    [Description("The weight (quantity) of the tea type in grams")] float Grams,
+    [Description("The order amount (price) in EUR")] float Price)
+{
+}
+```
+
+3. SharpChat is setup during initialization of your services.
 Simply call `AddSharpChat` to register the functions you want the chatbot to use.
 
 ```csharp
@@ -45,7 +62,7 @@ var services = new ServiceCollection()
     .BuildServiceProvider();
 ```
 
-2. Start a conversation, passing an OpenAI API client initialized with your API key.
+3. Start a conversation, passing an OpenAI API client initialized with your API key.
 For best results you should use the `gpt-4` model. To be more cost efficient `gpt-3.5-turbo-0613` can also be used.
 
 ```csharp
@@ -56,7 +73,7 @@ var conversation = factory.StartConversation(client, "gpt-4");
 
 SharpChat automatically exposes your registerd functions to the conversation, allowing the chatbot to call them!
 
-3. Start chatting!
+4. Start chatting!
 
 ```csharp
 var output = await conversation.Prompt("What is the meaning of life?");
