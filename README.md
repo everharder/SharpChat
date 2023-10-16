@@ -42,7 +42,7 @@ public record Order([Description("The type of tea")] TeaType TeaType,
 }
 ```
 
-3. SharpChat is setup during initialization of your services.
+2. SharpChat is setup during initialization of your services.
 Simply call `AddSharpChat` to register the functions you want the chatbot to use.
 
 ```csharp
