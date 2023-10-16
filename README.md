@@ -6,6 +6,8 @@ Schema enginerring is the new prompt engineering!
 
 With SharpChat you can let ChatGPT call your full typed services, with only a few lines of code!
 
+
+Here's how it works in action:
 ```
 [user] Hi, please order me matcha for 10€ and black tea for 20€. Immediately place the order.    
 [call] GetPrice(Tea: Matcha)
