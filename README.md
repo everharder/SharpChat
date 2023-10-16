@@ -25,11 +25,11 @@ dotnet add package SharpChat
 
 1. Annotate your logic with `[Description]` attributes to give the chatbot some context
 ```csharp
-        [Description("Commit the purchase of some tea. Returns true if the order was successfully placed.")]
-        public bool PlaceOrder(Order order)
-        {
-        ...
-        }
+[Description("Commit the purchase of some tea. Returns true if the order was successfully placed.")]
+public bool PlaceOrder(Order order)
+{
+...
+}
 ```
 
 `[Description]` attrbutes should also be used to annotate parameter types!
